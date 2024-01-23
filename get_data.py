@@ -38,10 +38,10 @@ df_enderecos = df_corretoras_cru[['cnpj', 'email', 'telefone', 'cep', 'pais', 'u
 # Carregamento dos dados no banco de dados
 conn = sqlite3.connect('corretoras.db')
 
-# Configure foreign keys
+# Configuração das chaves primárias 
 conn.execute('PRAGMA foreign_keys = ON')
 
-# Create foreign key relationships
+# Criação dos relacionamentos e tabelas
 conn.execute('''
     CREATE TABLE IF NOT EXISTS patrimonios (
         cnpj TEXT,
@@ -85,7 +85,6 @@ df_enderecos.to_sql('enderecos', conn, if_exists='replace', index=False)
 
 
 # Validação dos dados
-# Get total number of rows in each table
 cursor = conn.cursor()
 cursor.execute("SELECT COUNT(*) FROM corretoras")
 total_corretoras = cursor.fetchone()[0]
@@ -98,7 +97,6 @@ total_enderecos = cursor.fetchone()[0]
 
 erros = False
 
-# Compare with the length of each dataframe
 if total_corretoras == len(df_corretoras_ativas):
     print("Tabela 'corretoras' foi carregada corretamente")
 else:
